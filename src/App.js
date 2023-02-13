@@ -1,3 +1,4 @@
+import React from 'react';
 import './scss/app.scss';
 
 import Categories from './components/Categories';
@@ -5,14 +6,9 @@ import Header from './components/Header';
 import Sort from './components/Sort';
 import PizzaBlock from './components/PizzaBlock';
 
-function App() {
-  const pizzas = [
-    { id: 0, name: 'Meksican', price: 319 },
-    { id: 1, name: 'Purrina', price: 599 },
-    { id: 2, name: 'Solami', price: 299 },
-    { id: 3, name: 'Italiano', price: 449 },
-  ];
+import pizzas from './assets/pizzas.json';
 
+function App() {
   return (
     <div className="wrapper">
       <Header />

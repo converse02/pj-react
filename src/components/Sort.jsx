@@ -1,9 +1,15 @@
 import React from 'react';
 
 function Sort() {
+  const [isActiveSort, setIsActiveSort] = React.useState(false);
+
+  const clickPopup = () => {
+    setIsActiveSort(!isActiveSort);
+  };
+
   return (
     <div className="sort">
-      <div className="sort__label">
+      <div className={isActiveSort ? 'sort__label sort__label--active' : 'sort__label'}>
         <svg
           width="10"
           height="6"
@@ -16,15 +22,17 @@ function Sort() {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>популярности</span>
+        <span onClick={clickPopup}>популярности</span>
       </div>
-      <div className="sort__popup">
-        <ul>
-          <li className="active">популярности</li>
-          <li>цене</li>
-          <li>алфавиту</li>
-        </ul>
-      </div>
+      {isActiveSort && (
+        <div className="sort__popup">
+          <ul>
+            <li className="active">популярности</li>
+            <li>цене</li>
+            <li>алфавиту</li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
