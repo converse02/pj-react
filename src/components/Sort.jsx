@@ -1,19 +1,22 @@
 import React from 'react';
 
-function Sort() {
-  const sorts = ['популярности', 'цене', 'алфавиту'];
+function Sort({ value, onClickSort }) {
+  const sorts = [
+    { name: 'популярности', sort: 'rating' },
+    { name: 'цене', sort: 'price' },
+    { name: 'алфавиту', sort: 'title' },
+  ];
 
   const [isActiveSort, setIsActiveSort] = React.useState(false);
-  const [isSort, setIsSort] = React.useState(0);
 
-  const sortName = sorts[isSort];
+  const { name: sortName } = sorts.find((item) => item.sort === value);
 
   const clickPopup = () => {
     setIsActiveSort(!isActiveSort);
   };
 
   const clickSortItem = (index) => {
-    setIsSort(index);
+    onClickSort(index);
     setIsActiveSort(false);
   };
 
@@ -37,12 +40,12 @@ function Sort() {
       {isActiveSort && (
         <div className="sort__popup">
           <ul>
-            {sorts.map((item, index) => (
+            {sorts.map((obj, index) => (
               <li
                 key={'sort_' + index}
-                className={index === isSort ? 'active' : ''}
-                onClick={() => clickSortItem(index)}>
-                {item}
+                className={obj.sort === value ? 'active' : ''}
+                onClick={() => clickSortItem(obj.sort)}>
+                {obj.name}
               </li>
             ))}
           </ul>
