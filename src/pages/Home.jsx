@@ -4,6 +4,7 @@ import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
+import Pagination from '../components/Pagination';
 
 const Home = () => {
   const [pizzas, setPizzas] = React.useState([]);
@@ -11,12 +12,14 @@ const Home = () => {
   const [categoryId, setCategoryId] = React.useState(0);
   const [sortId, setSortId] = React.useState('rating');
 
+  const [page, setPage] = React.useState(1);
+
+  const category = categoryId ? 'category=' + categoryId : '';
+
   React.useEffect(() => {
     setIsLoading(true);
     fetch(
-      `https://63eb336efb6b6b7cf7d97abc.mockapi.io/items?${
-        categoryId ? 'category=' + categoryId : ''
-      }&sortBy=${sortId}&order=asc`,
+      `https://63eb336efb6b6b7cf7d97abc.mockapi.io/items?page=${page}&limit=4&${category}&sortBy=${sortId}&order=asc`,
     )
       .then((resp) => resp.json())
       .then((data) => {
@@ -25,7 +28,7 @@ const Home = () => {
       });
 
     window.scrollTo(0, 0);
-  }, [categoryId, sortId]);
+  }, [category, sortId, page]);
 
   return (
     <div className="container">
@@ -39,6 +42,7 @@ const Home = () => {
           ? [...new Array(8)].map((_, index) => <Skeleton key={index} />)
           : pizzas.map((item) => <PizzaBlock key={item.id} {...item} />)}
       </div>
+      <Pagination onPageChange={(i) => setPage(i)} />
     </div>
   );
 };
