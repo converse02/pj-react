@@ -1,21 +1,35 @@
 import React from 'react';
 import { SearchContext } from '../../App';
+import debounce from 'lodash.debounce';
 
 import styles from './Search.module.scss';
 
 function Search() {
-  // const [searchValue, setSearchValue] = React.useState('');
+  const [value, setValue] = React.useState('');
 
-  const { searchValue, setSearchValue } = React.useContext(SearchContext);
+  const { setSearchValue } = React.useContext(SearchContext);
+
+  const inputEl = React.useRef(null);
+
+  const onClickClear = () => {
+    setSearchValue('');
+    setValue('');
+    inputEl.current?.focus();
+  };
+
+  const updateSearchValue = React.useCallback(
+    debounce((str) => setSearchValue(str), 250),
+    [],
+  );
+
+  const onChangeInput = (e) => {
+    const str = e.target.value;
+    setValue(str);
+    updateSearchValue(str);
+  };
 
   return (
     <div className={styles.root}>
-      <input
-        className=""
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-        placeholder="Введите название пиццы"
-      />
       <svg
         width="30"
         height="30"
@@ -36,6 +50,21 @@ function Search() {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
+      </svg>
+      <input
+        ref={inputEl}
+        value={value}
+        onChange={onChangeInput}
+        placeholder="Введите название пиццы"
+      />
+      <svg
+        className={styles.close}
+        onClick={onClickClear}
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 50 50"
+        width="30px"
+        height="30px">
+        <path d="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z" />
       </svg>
     </div>
   );

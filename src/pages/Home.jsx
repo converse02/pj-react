@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -13,25 +14,25 @@ const Home = () => {
 
   const categoryId = useSelector(({ filter }) => filter.filterIndex);
   const sortId = useSelector(({ filter }) => filter.sort);
+  const page = useSelector(({ filter }) => filter.pageCount);
 
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [page, setPage] = React.useState(1);
+  // const [page, setPage] = React.useState(1);
 
   const category = categoryId ? 'category=' + categoryId : '';
   const search = searchValue ? `&search=${searchValue}` : '';
 
   React.useEffect(() => {
     setIsLoading(true);
-    fetch(
-      `https://63eb336efb6b6b7cf7d97abc.mockapi.io/items?page=${page}&limit=4&${category}&sortBy=${sortId}&order=asc${search}`,
-    )
-      .then((resp) => resp.json())
-      .then((data) => {
-        setPizzas(data);
+    axios
+      .get(
+        `https://63eb336efb6b6b7cf7d97abc.mockapi.io/items?page=${page}&limit=4&${category}&sortBy=${sortId}&order=asc${search}`,
+      )
+      .then((resp) => {
+        setPizzas(resp.data);
         setIsLoading(false);
       });
-
     window.scrollTo(0, 0);
   }, [category, sortId, page, search]);
 
@@ -47,7 +48,7 @@ const Home = () => {
           ? [...new Array(8)].map((_, index) => <Skeleton key={index} />)
           : pizzas.map((item) => <PizzaBlock key={item.id} {...item} />)}
       </div>
-      <Pagination onPageChange={(i) => setPage(i)} />
+      <Pagination />
     </div>
   );
 };
