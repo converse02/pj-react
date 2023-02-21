@@ -6,15 +6,16 @@ import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { SearchContext } from '../App';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
   const { searchValue } = React.useContext(SearchContext);
 
+  const categoryId = useSelector(({ filter }) => filter.filterIndex);
+
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [categoryId, setCategoryId] = React.useState(0);
   const [sortId, setSortId] = React.useState('rating');
-
   const [page, setPage] = React.useState(1);
 
   const category = categoryId ? 'category=' + categoryId : '';
@@ -37,7 +38,7 @@ const Home = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={categoryId} onClickCategory={(i) => setCategoryId(i)} />
+        <Categories />
         <Sort value={sortId} onClickSort={(type) => setSortId(type)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
