@@ -12,10 +12,10 @@ const Home = () => {
   const { searchValue } = React.useContext(SearchContext);
 
   const categoryId = useSelector(({ filter }) => filter.filterIndex);
+  const sortId = useSelector(({ filter }) => filter.sort);
 
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [sortId, setSortId] = React.useState('rating');
   const [page, setPage] = React.useState(1);
 
   const category = categoryId ? 'category=' + categoryId : '';
@@ -39,7 +39,7 @@ const Home = () => {
     <div className="container">
       <div className="content__top">
         <Categories />
-        <Sort value={sortId} onClickSort={(type) => setSortId(type)} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
