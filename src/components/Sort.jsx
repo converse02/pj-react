@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSortType } from '../redux/slices/filterSlice';
 
 function Sort() {
+  const sortRef = React.useRef();
+
   const sorts = [
     { name: 'популярности', sort: 'rating' },
     { name: 'цене', sort: 'price' },
@@ -25,8 +27,22 @@ function Sort() {
     setIsActiveSort(false);
   };
 
+  React.useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.composedPath().includes(sortRef.current)) {
+        setIsActiveSort(false);
+      }
+    };
+
+    document.body.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className={isActiveSort ? 'sort__label sort__label--active' : 'sort__label'}>
         <svg
           width="10"

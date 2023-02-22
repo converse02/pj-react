@@ -62,9 +62,9 @@ const Home = () => {
     if (searchString) {
       const params = qs.parse(searchString.substring(1));
       dispatch(setFilters(params));
-    }
 
-    isSearch.current = true;
+      isSearch.current = true;
+    }
   }, []);
 
   React.useEffect(() => {
