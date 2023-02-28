@@ -60,6 +60,14 @@ const cartSlice = createSlice({
   },
 });
 
+// For example, how create selectors. This selector will use in Header.jsx
+export const selectCart = (state) => state.cart;
+
+// This selector will use in PizzaBlock.jsx
+
+export const selectCartItemById = (id) => (state) =>
+  state.cart.items.find((item) => item.id === id);
+
 export const { addItem, removeItem, clearItems, plusItem, minusItem } = cartSlice.actions;
 
 export default cartSlice.reducer;
